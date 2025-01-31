@@ -9,11 +9,7 @@
 				"build",
 				"-ldflags=-s -w -X main.version=1.0.0",
 				"-o",
-				"PortHunter.exe", 
-				"-c",
-				"masscan",
-				"-t", 
-				"127.0.0.1"
+				"PortHunter.exe"
 			],
 			"problemMatcher": [
 				"$go"
