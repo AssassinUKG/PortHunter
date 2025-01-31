@@ -2,11 +2,20 @@
 
 PortHunter is a fast and efficient port scanning tool that automates the process of running Nmap, storing results, and comparing them to detect network changes over time.
 
+## Screenshots
+
+First Scan
+![image](https://github.com/user-attachments/assets/a5fc7f61-2b1b-4204-a552-3edafc984b3c)
+
+Scan after
+![image](https://github.com/user-attachments/assets/2e54f342-f547-4fd1-8c96-644f313a7de7)
+
+
 ## Features
 
 - 🔍 **Nmap Automation** - Automates network scanning with Nmap.
 - 📊 **Scan Comparison** - Detects added or removed ports between scans.
-- 💄 **JSON Output & Storage** - Saves scan results in structured JSON format.
+- 💄 **JSON Storage** - Saves scan results in structured JSON format.
 - ⏳ **Timestamp Tracking** - Tracks when each scan was performed.
 - 🚀 **Multi-threaded Processing** - Handles large-scale scans efficiently.
 - 🔔 **Silent Mode** - Runs without verbose console output.
@@ -57,7 +66,7 @@ Summary: 1 new port added, 1 removed.
 ```
 
 ## Roadmap & Future Improvements
-- 🔄 **Resume Feature** - Restart from the last interrupted scan.
+- 📁 ***Backup Scan Data*** - Save all scan data for future reference or analysis.
 - 🔔 **Notification Support** - Send alerts via Slack or email when changes are detected.
 - 📡 **Multi-target Scanning** - Support for scanning multiple IPs in a single execution.
 
