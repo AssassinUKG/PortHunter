@@ -1,0 +1,28 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "go: build package",
+			"command": "go",
+			"args": [
+				"build",
+				"-ldflags=-s -w -X main.version=1.0.0",
+				"-o",
+				"PortHunter.exe", 
+				"-c",
+				"masscan",
+				"-t", 
+				"127.0.0.1"
+			],
+			"problemMatcher": [
+				"$go"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "(Windows) Builds the project with stripped symbols and version info. "
+		}
+	]
+}
