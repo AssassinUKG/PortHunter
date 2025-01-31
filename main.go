@@ -74,7 +74,7 @@ func RunScan(command string, target string) (ScanResult, error) {
 		return ScanResult{}, fmt.Errorf("scan failed: %v\nOutput: %s", err, out.String())
 	}
 
-	// Parse only Nmap output
+	// Parse Nmap output
 	results := ParseNmapOutput(out.String())
 
 	// Return scan results with full timestamp
@@ -117,17 +117,17 @@ func ParseNmapOutput(output string) map[string][]string {
 			parts := strings.Fields(line)
 			currentIP = parts[len(parts)-1]
 			currentIP = strings.Trim(currentIP, "()") // Remove brackets if present
-		} else if strings.Contains(line, "/tcp") && currentIP != "" {
+		} else if (strings.Contains(line, "/tcp") || strings.Contains(line, "/udp")) && currentIP != "" {
 			// Example Nmap port output:
 			// 80/tcp  open     http
 			// 443/tcp closed   https
-			// 22/tcp  filtered ssh
+			// 53/udp  open|filtered  domain
 
 			cols := strings.Fields(line)
 			if len(cols) >= 3 {
-				port := cols[0]    // Extract "80/tcp"
-				state := cols[1]   // Extract "open", "closed", "filtered"
-				service := cols[2] // Extract "http"
+				port := cols[0]    // Extract "80/tcp" or "53/udp"
+				state := cols[1]   // Extract "open", "closed", "filtered" or "open|filtered"
+				service := cols[2] // Extract "http", "https", "domain", etc.
 
 				// Save all states for proper tracking
 				results[currentIP] = append(results[currentIP], fmt.Sprintf("%s [%s] (%s)", port, state, service))
@@ -175,10 +175,10 @@ func SaveScan(scan ScanResult) error {
 
 // CompareScans finds differences between scans, updates stored scan if changes are detected
 func CompareScans(old, new ScanResult) {
-	// ANSI color codes
+	// ANSI colour codes
 	green := "\033[32m" // Green for added ports
 	red := "\033[31m"   // Red for removed ports
-	reset := "\033[0m"  // Reset to default color
+	reset := "\033[0m"  // Reset to default colour
 
 	// Parse timestamps
 	oldTime, err := time.Parse(time.RFC3339, old.DateTime)
@@ -300,13 +300,13 @@ func main() {
 |  __/| |_| |  _ < | | |  _  | |_| | |\  | | | | |___|  _ < 
 |_|    \___/|_| \_\|_| |_| |_|\___/|_| \_| |_| |_____|_| \_\
                                                             
-		🔎 PortHunter - The Ultimate Port Checker
+		🔎 PortHunter - The Ultimate Port Checker (Now with UDP support)
                     ⚡ Created by Richard Jones ⚡
 `
 
 	fmt.Println(banner)
 
-	scanCmd := flag.String("c", "", "Full scan command (e.g., 'nmap -p- -T4')")
+	scanCmd := flag.String("c", "", "Full scan command (e.g., 'nmap -p- -T4' or 'nmap -sU -p- -T4' for UDP)")
 	target := flag.String("t", "", "Target IP/hostname")
 	flag.Parse()
 
